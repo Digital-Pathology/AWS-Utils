@@ -2,6 +2,7 @@ import logging
 import boto3
 import sagemaker
 
+
 class S3SageMakerUtils():
     """
         A class to initiate a s3 sagemaker session
