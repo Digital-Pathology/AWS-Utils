@@ -2,13 +2,9 @@ import logging
 import boto3
 import sagemaker
 
-
 class S3SageMakerUtils():
     """
         A class to initiate a s3 sagemaker session
-        Methods:
-            upload_data(path, bucket="digpath-cache", key_prefix="latest"): upload local file or directory to S3
-            download_data( path, bucket="digpath-cache", key_prefix="latest"): download local file or directory from S3
     """
 
     def __init__(self):
@@ -20,11 +16,13 @@ class S3SageMakerUtils():
     def upload_data(self, path, bucket="digpath-cache", key_prefix="latest"):
         """
             Upload local file or directory to S3
-            Parameters:
-                path (string): path (absolute or relative) of local file or directory to upload
-                bucket (str): name of the s3 bucket to upload to
-                key_prefix (str): optional s3 object key name prefix, s3 uses the prefix to create 
-                                  a directory structure for the bucket content
+            
+            :param path: path (absolute or relative) of local file or directory to upload
+            :type path: str
+            :param bucket: name of the s3 bucket to upload to
+            :type bucket: str
+            :param key_prefix: optional s3 object key name prefix, s3 uses the prefix to create a directory structure for the bucket content
+            :type key_prefix: str
         """
 
         try:
@@ -37,10 +35,13 @@ class S3SageMakerUtils():
     def download_data(self, path, bucket="digpath-cache", key_prefix="latest"):
         """
             Download local file or directory from S3
-            Parameters:
-                path (string): local path where the file or directory should be downloaded to
-                bucket (str): name of the s3 bucket to download from
-                key_prefix (str): optional s3 object key name prefix
+
+            :param path: local path where the file or directory should be downloaded to
+            :type path: str
+            :param bucket: name of the s3 bucket to download from
+            :type bucket: str
+            :param key_prefix: optional s3 object key name prefix
+            :type str
         """
 
         try:
