@@ -1,5 +1,6 @@
 from subprocess import Popen, PIPE
 
+
 def authorize(aws_access_key_id, aws_secret_access_key, aws_session_token):
     """
     authorize checks AWS credentials - if authenticated returns True, else initiates login sequence
@@ -12,27 +13,29 @@ def authorize(aws_access_key_id, aws_secret_access_key, aws_session_token):
     :type aws_session_token: str
     :return: True if authenticated
     :rtype: Optional[bool]
-    """    
+    """
 
     check_credentials_command = ["aws sts get-caller-identity"]
-    check_credentials_process =  Popen(check_credentials_command, shell=True, stdout=PIPE, stderr=PIPE, text=True)
-    
+    check_credentials_process = Popen(
+        check_credentials_command, shell=True, stdout=PIPE, stderr=PIPE, text=True)
+
     if not check_credentials_process.stderr.read():
         check_credentials_process.stdout.flush()
         check_credentials_process.stderr.flush()
         return True
 
     command = [f"aws configure set aws_access_key_id {aws_access_key_id}",
-                f"aws configure set aws_secret_access_key {aws_secret_access_key}",
-                "aws configure set region us-east-1",
-                f"aws configure set aws_session_token {aws_session_token}"]
+               f"aws configure set aws_secret_access_key {aws_secret_access_key}",
+               "aws configure set region us-east-1",
+               f"aws configure set aws_session_token {aws_session_token}"]
     process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE, text=True)
     process.wait()
 
     process.stdin.flush()
     process.stdout.flush()
     process.stderr.flush()
-    
+
+
 def restore_object(key, days, bucket='digpath-data'):
     """
     restore_object restores an object in Amazon S3 from Glacier to Standard
@@ -45,21 +48,24 @@ def restore_object(key, days, bucket='digpath-data'):
     :type bucket: str
     :return: stderr if an error occurs when running the command
     :rtype: Optional[IO[str]]
-    """    
+    """
 
-    command = [f"aws s3api restore-object --restore-request Days={days} --bucket {bucket} --key {key}"]
-    process = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, text=True)
+    command = [
+        f"aws s3api restore-object --restore-request Days={days} --bucket {bucket} --key {key}"]
+    process = Popen(command, shell=True, stdin=PIPE,
+                    stdout=PIPE, stderr=PIPE, text=True)
     process.wait()
 
     if process.stderr.read():
         return process.stderr
-        
+
     process.stdin.flush()
     process.stdout.flush()
     process.stderr.flush()
 
     # for line in process.stderr:
     #     print(line)
+
 
 def status_update(key, bucket='digpath-data'):
     """
@@ -71,10 +77,11 @@ def status_update(key, bucket='digpath-data'):
     :type bucket: str
     :return: stderr if an error occurs when executing command, else returns stdout
     :rtype: Optional[IO[str]]
-    """    
+    """
 
     command = [f"aws s3api head-object --bucket {bucket} --key {key}"]
-    process = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, text=True)
+    process = Popen(command, shell=True, stdin=PIPE,
+                    stdout=PIPE, stderr=PIPE, text=True)
     process.wait()
 
     if process.stderr.read():

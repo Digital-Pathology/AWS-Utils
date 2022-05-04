@@ -2,6 +2,7 @@ import logging
 import boto3
 import sagemaker
 
+
 class S3SageMakerUtils():
     """
         A class to initiate a s3 sagemaker session
@@ -16,7 +17,7 @@ class S3SageMakerUtils():
     def upload_data(self, path, bucket="digpath-cache", key_prefix="latest"):
         """
             Upload local file or directory to S3
-            
+
             :param path: path (absolute or relative) of local file or directory to upload
             :type path: str
             :param bucket: name of the s3 bucket to upload to
